@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { Plus_Jakarta_Sans as FontSans } from "next/font/google";
-import { ThemeProvider } from "next-themes";
-
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
-const fontSans = FontSans({
+const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-sans",
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "A healthcare patient management System designed to streamline patient registration, appointment scheduling, and medical records management for healthcare providers.",
   icons: {
-    icon: "/assets/icons/logo-icon.svg",
+    icon: "/favicon.ico",
   },
 };
 
@@ -29,7 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-dark-300 font-sans antialiased",
+          "min-h-scren bg-dark-300 font-sans antialiased",
           fontSans.variable
         )}
       >

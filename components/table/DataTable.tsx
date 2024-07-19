@@ -1,17 +1,13 @@
 "use client";
 
 import {
-  getPaginationRowModel,
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import Image from "next/image";
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
 
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -20,7 +16,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { decryptKey } from "@/lib/utils";
+import { Button } from "../ui/button";
+import Image from "next/image";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -31,19 +28,6 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const encryptedKey =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("accessKey")
-      : null;
-
-  useEffect(() => {
-    const accessKey = encryptedKey && decryptKey(encryptedKey);
-
-    if (accessKey !== process.env.NEXT_PUBLIC_ADMIN_PASSKEY!.toString()) {
-      redirect("/");
-    }
-  }, [encryptedKey]);
-
   const table = useReactTable({
     data,
     columns,
@@ -54,12 +38,12 @@ export function DataTable<TData, TValue>({
   return (
     <div className="data-table">
       <Table className="shad-table">
-        <TableHeader className=" bg-dark-200">
+        <TableHeader className="bg-dark-200">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="shad-table-row-header">
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="text-white">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -81,7 +65,7 @@ export function DataTable<TData, TValue>({
                 className="shad-table-row"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="text-white">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -102,7 +86,7 @@ export function DataTable<TData, TValue>({
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className="shad-gray-btn"
+          className="shad-grey-btn"
         >
           <Image
             src="/assets/icons/arrow.svg"
@@ -116,13 +100,13 @@ export function DataTable<TData, TValue>({
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="shad-gray-btn"
+          className="shad-grey-btn"
         >
           <Image
             src="/assets/icons/arrow.svg"
             width={24}
             height={24}
-            alt="arrow "
+            alt="arrow"
             className="rotate-180"
           />
         </Button>

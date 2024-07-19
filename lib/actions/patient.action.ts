@@ -1,7 +1,7 @@
 "use server";
 
-import { ID, InputFile, Query } from "node-appwrite";
-
+import { ID, Query } from "node-appwrite";
+import { InputFile } from "node-appwrite/file";
 import {
   BUCKET_ID,
   DATABASE_ID,
@@ -13,6 +13,7 @@ import {
   users,
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
+
 
 // CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
@@ -40,21 +41,17 @@ export const createUser = async (user: CreateUserParams) => {
   }
 };
 
-// GET USER
 export const getUser = async (userId: string) => {
   try {
     const user = await users.get(userId);
-
     return parseStringify(user);
   } catch (error) {
-    console.error(
-      "An error occurred while retrieving the user details:",
-      error
-    );
+    console.log(error);
   }
-};
+}
 
-// REGISTER PATIENT
+
+
 export const registerPatient = async ({
   identificationDocument,
   ...patient
@@ -65,7 +62,7 @@ export const registerPatient = async ({
     if (identificationDocument) {
       const inputFile =
         identificationDocument &&
-        InputFile.fromBlob(
+        InputFile.fromBuffer(
           identificationDocument?.get("blobFile") as Blob,
           identificationDocument?.get("fileName") as string
         );
@@ -93,7 +90,6 @@ export const registerPatient = async ({
   }
 };
 
-// GET PATIENT
 export const getPatient = async (userId: string) => {
   try {
     const patients = await databases.listDocuments(

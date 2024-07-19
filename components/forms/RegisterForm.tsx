@@ -17,14 +17,14 @@ import {
   IdentificationTypes,
   PatientFormDefaultValues,
 } from "@/constants";
-import { registerPatient } from "@/lib/actions/patient.actions";
+import { registerPatient } from "@/lib/actions/patient.action";
 import { PatientFormValidation } from "@/lib/validation";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
-import { FileUploader } from "../FileUploader";
 import SubmitButton from "../SubmitButton";
+import FileUploader from "../FileUploader";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -84,7 +84,7 @@ const RegisterForm = ({ user }: { user: User }) => {
           : undefined,
         privacyConsent: values.privacyConsent,
       };
-
+      //@ts-ignore
       const newPatient = await registerPatient(patient);
 
       if (newPatient) {
@@ -104,13 +104,13 @@ const RegisterForm = ({ user }: { user: User }) => {
         className="flex-1 space-y-12"
       >
         <section className="space-y-4">
-          <h1 className="header">Welcome 👋</h1>
+          <h1 className="header text-white">Welcome 👋</h1>
           <p className="text-dark-700">Let us know more about yourself.</p>
         </section>
 
         <section className="space-y-6">
           <div className="mb-9 space-y-1">
-            <h2 className="sub-header">Personal Information</h2>
+            <h2 className="sub-header text-white">Personal Information</h2>
           </div>
 
           {/* NAME */}
@@ -168,8 +168,15 @@ const RegisterForm = ({ user }: { user: User }) => {
                   >
                     {GenderOptions.map((option, i) => (
                       <div key={option + i} className="radio-group">
-                        <RadioGroupItem value={option} id={option} />
-                        <Label htmlFor={option} className="cursor-pointer">
+                        <RadioGroupItem
+                          value={option}
+                          id={option}
+                          className="text-white"
+                        />
+                        <Label
+                          htmlFor={option}
+                          className="cursor-pointer text-white"
+                        >
                           {option}
                         </Label>
                       </div>
@@ -221,7 +228,7 @@ const RegisterForm = ({ user }: { user: User }) => {
 
         <section className="space-y-6">
           <div className="mb-9 space-y-1">
-            <h2 className="sub-header">Medical Information</h2>
+            <h2 className="sub-header text-white">Medical Information</h2>
           </div>
 
           {/* PRIMARY CARE PHYSICIAN */}
@@ -242,7 +249,7 @@ const RegisterForm = ({ user }: { user: User }) => {
                     alt="doctor"
                     className="rounded-full border border-dark-500"
                   />
-                  <p>{doctor.name}</p>
+                  <p className="text-white">{doctor.name}</p>
                 </div>
               </SelectItem>
             ))}
@@ -275,6 +282,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               name="allergies"
               label="Allergies (if any)"
               placeholder="Peanuts, Penicillin, Pollen"
+              class="xl:min-w-[400px]"
             />
 
             <CustomFormField
@@ -283,6 +291,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               name="currentMedication"
               label="Current medications"
               placeholder="Ibuprofen 200mg, Levothyroxine 50mcg"
+              class="xl:min-w-[400px]"
             />
           </div>
 
@@ -294,6 +303,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               name="familyMedicalHistory"
               label=" Family medical history (if relevant)"
               placeholder="Mother had brain cancer, Father has hypertension"
+              class="xl:min-w-[400px]"
             />
 
             <CustomFormField
@@ -302,13 +312,16 @@ const RegisterForm = ({ user }: { user: User }) => {
               name="pastMedicalHistory"
               label="Past medical history"
               placeholder="Appendectomy in 2015, Asthma diagnosis in childhood"
+              class="xl:min-w-[400px]"
             />
           </div>
         </section>
 
         <section className="space-y-6">
           <div className="mb-9 space-y-1">
-            <h2 className="sub-header">Identification and Verfication</h2>
+            <h2 className="sub-header text-white">
+              Identification and Verfication
+            </h2>
           </div>
 
           <CustomFormField
@@ -319,7 +332,7 @@ const RegisterForm = ({ user }: { user: User }) => {
             placeholder="Select identification type"
           >
             {IdentificationTypes.map((type, i) => (
-              <SelectItem key={type + i} value={type}>
+              <SelectItem key={type + i} value={type} className="text-white">
                 {type}
               </SelectItem>
             ))}
@@ -340,7 +353,7 @@ const RegisterForm = ({ user }: { user: User }) => {
             label="Scanned Copy of Identification Document"
             renderSkeleton={(field) => (
               <FormControl>
-                <FileUploader files={field.value} onChange={field.onChange} />
+                <FileUploader file={field.value} onChange={field.onChange} />
               </FormControl>
             )}
           />
@@ -348,7 +361,7 @@ const RegisterForm = ({ user }: { user: User }) => {
 
         <section className="space-y-6">
           <div className="mb-9 space-y-1">
-            <h2 className="sub-header">Consent and Privacy</h2>
+            <h2 className="sub-header text-white">Consent and Privacy</h2>
           </div>
 
           <CustomFormField

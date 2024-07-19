@@ -1,29 +1,28 @@
-"use client";
-
+import { convertFileToUrl } from "@/lib/utils";
 import Image from "next/image";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-import { convertFileToUrl } from "@/lib/utils";
-
-type FileUploaderProps = {
-  files: File[] | undefined;
-  onChange: (files: File[]) => void;
+type fileUploaderProps = {
+  file: File[] | undefined;
+  onChange: (file: File[]) => void;
 };
 
-export const FileUploader = ({ files, onChange }: FileUploaderProps) => {
+const FileUploader = ({ file, onChange }: fileUploaderProps) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     onChange(acceptedFiles);
   }, []);
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div {...getRootProps()} className="file-upload">
+    <div
+      {...getRootProps()}
+      className="file-upload border-dashed  border-dark-500"
+    >
       <input {...getInputProps()} />
-      {files && files?.length > 0 ? (
+      {file && file.length > 0 ? (
         <Image
-          src={convertFileToUrl(files[0])}
+          src={convertFileToUrl(file[0])}
           width={1000}
           height={1000}
           alt="uploaded image"
@@ -38,16 +37,16 @@ export const FileUploader = ({ files, onChange }: FileUploaderProps) => {
             alt="upload"
           />
           <div className="file-upload_label">
-            <p className="text-14-regular ">
-              <span className="text-green-500">Click to upload </span>
-              or drag and drop
+            <p className="text-14-regular">
+              <span className="text-green-500">Click to upload</span> or drag
+              and drop
             </p>
-            <p className="text-12-regular">
-              SVG, PNG, JPG or GIF (max. 800x400px)
-            </p>
+            <p>SVG, PNG, JPG or GIF (max. 800x400px)</p>
           </div>
         </>
       )}
     </div>
   );
 };
+
+export default FileUploader;

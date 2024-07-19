@@ -7,14 +7,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
-import { createUser } from "@/lib/actions/patient.actions";
+import { createUser } from "@/lib/actions/patient.action";
 import { UserFormValidation } from "@/lib/validation";
 
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 
-export const PatientForm = () => {
+const PatientForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,19 +31,17 @@ export const PatientForm = () => {
     setIsLoading(true);
 
     try {
-      const user = {
+      const userData = {
         name: values.name,
         email: values.email,
         phone: values.phone,
       };
-
-      const newUser = await createUser(user);
-
-      if (newUser) {
-        router.push(`/patients/${newUser.$id}/register`);
+      const user = await createUser(userData);
+      if (user) {
+        router.push(`/patients/${user.$id}/register`);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     setIsLoading(false);
@@ -51,17 +49,17 @@ export const PatientForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
-        <section className="mb-12 space-y-4">
-          <h1 className="header">Hi there 👋</h1>
-          <p className="text-dark-700">Get started with appointments.</p>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
+        <section className="space-y-4 mb-12">
+          <h1 className="header text-white">Hi there 👋</h1>
+          <p className=" text-dark-700">Get Started with Appointments.</p>
         </section>
 
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
           name="name"
-          label="Full name"
+          label="Full Name"
           placeholder="John Doe"
           iconSrc="/assets/icons/user.svg"
           iconAlt="user"
@@ -72,7 +70,7 @@ export const PatientForm = () => {
           control={form.control}
           name="email"
           label="Email"
-          placeholder="johndoe@gmail.com"
+          placeholder="john.doe@carepulse.com"
           iconSrc="/assets/icons/email.svg"
           iconAlt="email"
         />
@@ -81,8 +79,8 @@ export const PatientForm = () => {
           fieldType={FormFieldType.PHONE_INPUT}
           control={form.control}
           name="phone"
-          label="Phone number"
-          placeholder="(555) 123-4567"
+          label="Phone Number"
+          placeholder="(123) 456-7890"
         />
 
         <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
@@ -90,3 +88,5 @@ export const PatientForm = () => {
     </Form>
   );
 };
+
+export default PatientForm;
